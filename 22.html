@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('2.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* Adjusted max-width for the container */
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%; /* Set the width of the table to 100% */
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        #thankYouMessage {
+            display: none;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h2>Booking Table</h2>
+        <form id="bookingForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required>
+            <label for="vehicleType">Vehicle Type:</label>
+            <select id="vehicleType" name="vehicleType" required>
+                <option value="">Select Vehicle Type</option>
+                <option value="car">Car</option>
+                <option value="bus">Bus</option>
+                <option value="Airplane">Airplane</option>
+            </select>
+            <label for="travelDate">Travelling Date:</label>
+            <input type="date" id="travelDate" name="travelDate" required>
+            <label for="noOfPersons">No of Persons:</label>
+            <input type="number" id="noOfPersons" name="noOfPersons" min="1" required>
+            <input type="submit" value="Submit">
+        </form>
+        <table id="bookingTable">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Vehicle Type</th>
+                    <th>Travelling Date</th>
+                    <th>No of Persons</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <p id="thankYouMessage">Thank you for your booking! Check your Gmail for further details.
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const vehicleType = document.getElementById('vehicleType').value;
+            const travelDate = document.getElementById('travelDate').value;
+            const noOfPersons = document.getElementById('noOfPersons').value;
+            if (name && email && phone && vehicleType && travelDate && noOfPersons) {
+                const cost = calculateCost(vehicleType, noOfPersons);
+                const bookingId = generateBookingId();
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `<td>${bookingId}</td><td>${name}</td><td>${email}</td><td>${phone}</td><td>${vehicleType}</td><td>${travelDate}</td><td>${noOfPersons}</td><td>$${cost}</td>`;
+                document.getElementById('bookingTable').getElementsByTagName('tbody')[0].appendChild(newRow);
+                document.getElementById('thankYouMessage').style.display = 'block';
+            } else {
+                alert('Please fill in all required details');
+            }
+        });
+        function calculateCost(vehicleType, noOfPersons) {
+            let cost;
+            switch (vehicleType) {
+                case 'car':
+                    cost = 100;
+                    break;
+                case 'bus':
+                    cost = 200;
+                    break;
+                case 'Airplane':
+                    cost = 1500;
+                    break;
+            }
+            return cost * noOfPersons;
+        }
+        function generateBookingId() {
+            return Math.floor(Math.random() * 1000000000);
+        }
+    </script>
+</body>
+</html>
